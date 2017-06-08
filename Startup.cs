@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AspnetCore.Jwt.Authentication.DbContexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
-namespace aspnetcore_jwt_authentication
+namespace AspnetCore.Jwt.Authentication
 {
     public class Startup
     {
@@ -27,6 +25,8 @@ namespace aspnetcore_jwt_authentication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<GroceryListContext>(opt => opt.UseInMemoryDatabase());
+
             // Add framework services.
             services.AddMvc();
         }
