@@ -1,6 +1,7 @@
 ﻿using AspnetCore.Jwt.Authentication.DbContexts;
 using AspnetCore.Jwt.Authentication.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,7 +26,7 @@ namespace AspnetCore.Jwt.Authentication.Controllers
         [HttpGet]
         public IEnumerable<GroceryItem> GetAll()
         {
-            return _context.GroceryList.ToList();
+            return _context.GroceryList.AsNoTracking().ToList();
         }
 
         [HttpGet("{id}", Name = "GetGroceryItem")]

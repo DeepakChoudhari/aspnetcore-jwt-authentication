@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using AspnetCore.Jwt.Authentication.Models;
 
 namespace AspnetCore.Jwt.Authentication
 {
@@ -25,6 +26,8 @@ namespace AspnetCore.Jwt.Authentication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));
+
             services.AddDbContext<GroceryListContext>(opt => opt.UseInMemoryDatabase());
 
             // Add framework services.

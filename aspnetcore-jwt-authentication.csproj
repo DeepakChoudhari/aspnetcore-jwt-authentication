@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <AssemblyName>AspnetCore.Jwt.Authentication</AssemblyName>
     <RootNamespace>AspnetCore.Jwt.Authentication</RootNamespace>
+    <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,8 +14,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="1.1.2" />
+    <PackageReference Include="JWT" Version="3.0.0-beta1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.2" />
   </ItemGroup>
 
 </Project>
