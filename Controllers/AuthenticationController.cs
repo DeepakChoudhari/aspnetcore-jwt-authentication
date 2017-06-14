@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AspnetCore.Jwt.Authentication.Controllers
@@ -27,6 +28,7 @@ namespace AspnetCore.Jwt.Authentication.Controllers
             
         }
 
+        [HttpPost]
         public async Task<IActionResult> Register([FromBody] Credentials credentials)
         {
             if (ModelState.IsValid)
@@ -46,9 +48,33 @@ namespace AspnetCore.Jwt.Authentication.Controllers
                         }
                     );
                 }
+
+                return Errors(result);
             }
 
             return Error("Unexpected error!");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SignIn([FromBody] Credentials credentials)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(credentials.Email,
+                                                    credentials.Password, false, false);
+                if (result.Succeeded)
+                {
+                    var user = await _userManager.FindByEmailAsync(credentials.Email);
+                    return new JsonResult(new Dictionary<string, object>
+                    {
+                        { "access_token", GetAccessToken(credentials.Email) },
+                        { "id_token", GetIdToken(user) }
+                    });
+                }
+
+                return new JsonResult("Unable to sign in") { StatusCode = 401 };
+            }
+            return Error("Unexpected error");
         }
 
         private string GetAccessToken(string email)
@@ -64,6 +90,14 @@ namespace AspnetCore.Jwt.Authentication.Controllers
         private JsonResult Error(string message)
         {
             return new JsonResult(message) { StatusCode = 400 };
+        }
+
+        private JsonResult Errors(IdentityResult result)
+        {
+            var items = result.Errors
+                        .Select(error => error.Description)
+                        .ToArray();
+            return new JsonResult(items) { StatusCode = 400 };
         }
     }
 }

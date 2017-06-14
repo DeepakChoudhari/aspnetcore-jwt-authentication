@@ -1,5 +1,6 @@
 ﻿using AspnetCore.Jwt.Authentication.DbContexts;
 using AspnetCore.Jwt.Authentication.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Linq;
 
 namespace AspnetCore.Jwt.Authentication.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class GroceryListController: Controller
     {
