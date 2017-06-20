@@ -28,7 +28,7 @@ namespace AspnetCore.Jwt.Authentication.Controllers
             
         }
 
-        [HttpPost]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] Credentials credentials)
         {
             if (ModelState.IsValid)
@@ -55,7 +55,7 @@ namespace AspnetCore.Jwt.Authentication.Controllers
             return Error("Unexpected error!");
         }
 
-        [HttpPost]
+        [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn([FromBody] Credentials credentials)
         {
             if (ModelState.IsValid)
