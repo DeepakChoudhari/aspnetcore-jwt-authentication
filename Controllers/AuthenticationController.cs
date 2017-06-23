@@ -1,11 +1,15 @@
-﻿using AspnetCore.Jwt.Authentication.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AspnetCore.Jwt.Authentication.Models;
+using JWT;
+using JWT.Algorithms;
+using JWT.Serializers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AspnetCore.Jwt.Authentication.Controllers
 {
@@ -28,7 +32,7 @@ namespace AspnetCore.Jwt.Authentication.Controllers
             
         }
 
-        [HttpPost("Register")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Register([FromBody] Credentials credentials)
         {
             if (ModelState.IsValid)
@@ -55,7 +59,7 @@ namespace AspnetCore.Jwt.Authentication.Controllers
             return Error("Unexpected error!");
         }
 
-        [HttpPost("SignIn")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> SignIn([FromBody] Credentials credentials)
         {
             if (ModelState.IsValid)
@@ -78,13 +82,51 @@ namespace AspnetCore.Jwt.Authentication.Controllers
         }
 
         private string GetAccessToken(string email)
-        {            
-            return string.Empty;
+        {
+            var payload = new Dictionary<string, object>
+            {
+                { "sub", email },
+                { "email", email }
+            };
+            return GetToken(payload);
+        }
+
+        private string GetToken(IDictionary<string, object> payload)
+        {
+            var secret = _options.SecretKey;
+
+            payload.Add("iss", _options.Issuer);
+            payload.Add("aud", _options.Audience);
+            payload.Add("nbf", ConvertToUnixTimestamp(DateTime.Now));
+            payload.Add("iat", ConvertToUnixTimestamp(DateTime.Now));
+            payload.Add("exp", ConvertToUnixTimestamp(DateTime.Now.AddMinutes(2)));
+
+            IJwtAlgorithm algorithm = new HMACSHA256Algorithm();
+            IJsonSerializer serializer = new JsonNetSerializer();
+            IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
+            IJwtEncoder jwtEncoder = new JwtEncoder(algorithm, serializer, urlEncoder);
+
+            return jwtEncoder.Encode(payload, secret);
+        }
+
+        private static double ConvertToUnixTimestamp(DateTime date)
+        {
+            var originDate = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            TimeSpan diff = date.ToUniversalTime() - originDate;
+            return Math.Floor(diff.TotalMilliseconds);
         }
 
         private string GetIdToken(IdentityUser user)
         {
-            return string.Empty;
+            var payload = new Dictionary<string, object>
+            {
+                { "id", user.Id },
+                { "sub", user.Email },
+                { "email", user.Email },
+                { "emailConfirmed", user.EmailConfirmed }
+            };
+
+            return GetToken(payload);
         }
 
         private JsonResult Error(string message)
