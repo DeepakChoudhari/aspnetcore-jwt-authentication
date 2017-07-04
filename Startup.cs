@@ -91,7 +91,10 @@ namespace AspnetCore.Jwt.Authentication
                 AutomaticAuthenticate = false,
                 AutomaticChallenge = false
             });
+
             app.UseMvc();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
         }
     }
 }
