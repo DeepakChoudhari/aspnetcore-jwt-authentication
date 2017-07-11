@@ -1,0 +1,31 @@
+{
+  "name": "wwwroot",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Deepak Choudhari",
+  "license": "ISC",
+  "dependencies": {
+    "@angular/common": "^4.2.6",
+    "@angular/compiler": "^4.2.6",
+    "@angular/core": "^4.2.6",
+    "@angular/forms": "^4.2.6",
+    "@angular/http": "^4.2.6",
+    "@angular/platform-browser": "^4.2.6",
+    "@angular/platform-browser-dynamic": "^4.2.6",
+    "@angular/router": "^4.2.6",
+    "core-js": "^2.4.1",
+    "es6-shim": "^0.35.3",
+    "reflect-metadata": "^0.1.10",
+    "rxjs": "^5.4.2",
+    "systemjs": "^0.20.15",
+    "zone.js": "^0.8.12"
+  },
+  "devDependencies": {
+    "@types/jasmine": "2.5.36",
+    "@types/node": "^6.0.46",
+    "typescript": "^2.4.1"
+  }
+}
