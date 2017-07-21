@@ -16,6 +16,7 @@
     "@angular/platform-browser": "^4.2.6",
     "@angular/platform-browser-dynamic": "^4.2.6",
     "@angular/router": "^4.2.6",
+    
     "core-js": "^2.4.1",
     "es6-shim": "^0.35.3",
     "reflect-metadata": "^0.1.10",
